@@ -98,7 +98,7 @@
 			<assert test="exists(cac:Price/cbc:PriceAmount)" flag="fatal" id="BR-26">[BR-26]-Each Invoice line (BG-25) shall contain the Item net price (BT-146).</assert>
 			<assert test="(cac:Price/cbc:PriceAmount) &gt;= 0" flag="fatal" id="BR-27">[BR-27]-The Item net price (BT-146) shall NOT be negative.</assert>
 			<assert test="(cac:Price/cac:AllowanceCharge/cbc:BaseAmount) &gt;= 0 or not(exists(cac:Price/cac:AllowanceCharge/cbc:BaseAmount))" flag="fatal" id="BR-28">[BR-28]-The Item gross price (BT-148) shall NOT be negative.</assert>
-			<assert test="(cac:Item/cac:ClassifiedTaxCategory/cbc:ID)" flag="fatal" id="BR-CO-04-GST-SG">[BR-CO-04-GST-SG]-Each Invoice line (BG-25) shall be categorized with an Invoiced item GST category code (BT-151-GST).</assert>
+			<assert test="(cac:Item/cac:ClassifiedTaxCategory[cac:TaxScheme/cbc:ID='GST']/cbc:ID)" flag="fatal" id="BR-CO-04-GST-SG">[BR-CO-04-GST-SG]-Each Invoice line (BG-25) shall be categorized with an Invoiced item GST category code (BT-151-GST).</assert>
 			<assert test="string-length(substring-after(cbc:LineExtensionAmount,'.'))&lt;=2" flag="fatal" id="BR-DEC-23">[BR-DEC-23]-The allowed maximum number of decimals for the Invoice line net amount (BT-131) is 2.    </assert>
 		</rule>
 		<rule context="//cac:InvoiceLine/cac:AllowanceCharge[cbc:ChargeIndicator = 'false'] | //cac:CreditNoteLine/cac:AllowanceCharge[cbc:ChargeIndicator = 'false']">
@@ -173,8 +173,8 @@
 		<rule context="cac:TaxTotal/cac:TaxSubtotal">
 			<assert test="exists(cbc:TaxableAmount)" flag="fatal" id="BR-45-GST-SG">[BR-45-GST-SG]-Each GST Breakdown (BG-23-GST) shall have a GST category taxable amount (BT-116-GST).</assert>
 			<assert test="exists(cbc:TaxAmount)" flag="fatal" id="BR-46-GST-SG">[BR-46-GST-SG]-Each GST Breakdown (BG-23-GST) shall have a GST category tax amount (BT-117-GST).</assert>
-			<assert test="exists(cac:TaxCategory/cbc:ID)" flag="fatal" id="BR-47-GST-SG">[BR-47-GST-SG]-Each GST Breakdown (BG-23-GST) shall be defined through a GST category code (BT-118-GST).</assert>
-			<assert test="exists(cac:TaxCategory/cbc:Percent) or (normalize-space(cac:TaxCategory/cbc:ID)='O')" flag="fatal" id="BR-48-GST-SG">[BR-48-GST-SG]-Each GST breakdown (BG-23-GST) shall have a GST category rate (BT-119-GST), except if the Invoice is not subject to GST.</assert>
+			<assert test="exists(cac:TaxCategory[cac:TaxScheme/cbc:ID='GST']/cbc:ID)" flag="fatal" id="BR-47-GST-SG">[BR-47-GST-SG]-Each GST Breakdown (BG-23-GST) shall be defined through a GST category code (BT-118-GST).</assert>
+			<assert test="exists(cac:TaxCategory[cac:TaxScheme/cbc:ID='GST']/cbc:Percent) or (normalize-space(cac:TaxCategory[cac:TaxScheme/cbc:ID='GST']/cbc:ID)='O')" flag="fatal" id="BR-48-GST-SG">[BR-48-GST-SG]-Each GST breakdown (BG-23-GST) shall have a GST category rate (BT-119-GST), except if the Invoice is not subject to GST.</assert>
 			<assert test="(round(cac:TaxCategory/xs:decimal(cbc:Percent)) = 0 and (round(xs:decimal(cbc:TaxAmount)) = 0)) or (round(cac:TaxCategory/xs:decimal(cbc:Percent)) != 0 and (xs:decimal(cbc:TaxAmount) = round(xs:decimal(cbc:TaxableAmount) * (cac:TaxCategory/xs:decimal(cbc:Percent) div 100) * 10 * 10) div 100 )) or (not(exists(cac:TaxCategory/xs:decimal(cbc:Percent))) and (round(xs:decimal(cbc:TaxAmount)) = 0))" flag="fatal" id="BR-CO-17-GST-SG">[BR-CO-17-GST-SG]-GST category tax amount (BT-117-GST) = GST category taxable amount (BT-116-GST) x (GST category rate (BT-119-GST) / 100), rounded to two decimals.</assert>
 			<assert test="string-length(substring-after(cbc:TaxableAmount,'.'))&lt;=2" flag="fatal" id="BR-DEC-19-GST-SG">[BR-DEC-19-GST-SG]-The allowed maximum number of decimals for the GST category taxable amount (BT-116-GST) is 2.</assert>
 			<assert test="string-length(substring-after(cbc:TaxAmount,'.'))&lt;=2" flag="fatal" id="BR-DEC-20-GST-SG">[BR-DEC-20-GST-SG]-The allowed maximum number of decimals for the GST category tax amount (BT-117-GST) is 2.</assert>
